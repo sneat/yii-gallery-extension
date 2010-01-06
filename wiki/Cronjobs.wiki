@@ -1,0 +1,15 @@
+#summary How to set up cron or scheduled tasks if you find you aren't getting any thumbnails
+#labels Phase-Support
+
+= (`*`)unix servers=
+
+*Using cron*
+
+Blah
+
+
+= Windows servers =
+
+*Using scheduled tasks*
+
+Blah
