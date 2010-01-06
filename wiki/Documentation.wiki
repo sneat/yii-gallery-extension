@@ -1,0 +1,39 @@
+#summary Documentation
+#labels Phase-Deploy
+
+== Requirements ==
+Yii 1.0 or above
+
+== Installation ==
+Extract the release file under `protected/extensions`
+
+== Usage ==
+Choose a location to store the photos: eg. /images/gallery
+
+Create some "albums" in the gallery and put your photos (and optional [DescriptionTxt description.txt]) in there eg.
+
+{{{
++-images/
+  +-gallery/
+    +-sample/
+    | +-image1.jpg
+    | +-image2.jpg
+    +-sample2/
+    | +-image4.jpg
+    | +-image5.jpg
+    +-sample3/
+      +-description.txt
+      +-image6.jpg
+      +-image7.jpg
+}}}
+
+If you name your folder by date (eg. 20091120) and create a [DescriptionTxt description.txt] you can sort your gallery [Properties by date], but show whatever album title you want.
+
+=== Add the following code to your view: ===
+{{{
+$this->widget('application.extensions.gallery.EGallery',
+        array('path' => '/images/gallery',
+            // 'other' => 'properties',
+            ),
+    );
+}}}
