@@ -37,3 +37,8 @@ $this->widget('application.extensions.gallery.EGallery',
             ),
     );
 }}}
+
+== Help me! ==
+
+* I'm not getting and thumbnails *
+  * Most likely your host is preventing the background task from being run. You have a [Cronjobs couple of options] available.
