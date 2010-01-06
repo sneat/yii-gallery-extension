@@ -1,5 +1,5 @@
 #summary Documentation
-#labels Phase-Deploy
+#labels Phase-Deploy,Featured
 
 == Requirements ==
 Yii 1.0 or above
