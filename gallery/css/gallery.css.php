@@ -1,8 +1,6 @@
-<?php echo '#'.$this->id; ?> ul.egallery {list-style: none}
+<?php echo '#'.$this->id; ?> ul {list-style: none}
 
-<?php echo '#'.$this->id;?> ul.egallery li a {display: block}
-
-<?php echo '#'.$this->id;?> ul.egallery li
+<?php echo '#'.$this->id;?> ul li
 {
 	list-style: none;
 	background: #eee;
@@ -20,7 +18,7 @@
 	overflow: hidden
 }
 
-<?php echo '#'.$this->id;?> ul.egallery img
+<?php echo '#'.$this->id;?> ul img
 {
 	background: #fff;
 	border-color: #aaa #ccc #ddd #bbb;
