@@ -66,13 +66,18 @@
  * @link http://www.yiiframework.com/extension/egallery/
  */
 
-Yii::import('application.extensions.gallery.EGalleryBase');
+Yii::import('application.extensions.gallery.*');
 
 class EGallery extends EGalleryBase {
 	/**
+	 * @var boolean whether to display the number of images in an album
+	 */
+	public $displayNumImages = true;
+
+	/**
 	 * Initialisation method called by Yii when the component is loaded.
 	 *
-	 * Cleanup the {@see EGalleryBase::$path gallery path} and check that it's valid.
+	 * Cleanup the {@see $this->path gallery path} and check that it's valid.
 	 * Publish images and CSS.
 	 */
 	public function init(){

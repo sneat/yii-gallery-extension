@@ -4,16 +4,13 @@
  * EGalleryBase class file.
  *
  * Provides functions used by EGallery and EGalleryManager classes.
- * Logs notices to the category 'app.extensions.EGallery'.
+ * Logs notices to the category 'app.extensions.EGallery' with a level of 'info'.
  *
- * @todo Check what happens if exec or shell_exec don't run (allow cron jobs)
  * @version 1.0
  *
  * @author scythah <scythah@gmail.com>
  * @link http://www.yiiframework.com/extension/egallery/
  */
-
-Yii::import('application.extensions.gallery.models.*');
 
 class EGalleryBase extends CWidget {
 
@@ -75,11 +72,6 @@ class EGalleryBase extends CWidget {
 	 * @var string the {@link http://uk3.php.net/manual/en/function.date.php date format} used for outputting
 	 */
     public $dateFormat = 'jS M Y';
-	
-	/**
-	 * @var boolean whether to display the number of images in an album
-	 */
-	public $displayNumImages = true;
 
 	/**
 	 * @var integer the number of images to show on each page
@@ -144,7 +136,7 @@ class EGalleryBase extends CWidget {
 	/**
 	 * Initialisation method called by Yii when the component is loaded.
 	 *
-	 * Cleanup the {@see $path gallery path} and check that it's valid.
+	 * Cleanup the {@see $this->path gallery path} and check that it's valid.
 	 * Publish images and CSS.
 	 */
 	protected function setup(){
@@ -167,7 +159,7 @@ class EGalleryBase extends CWidget {
 
 			parent::init();
 		else:
-			Yii::log('Path to gallery is not specified or invalid: '.$this->path, 'error', 'app.extensions.EGallery');
+			Yii::log('Path to gallery is not specified or invalid: '.$this->path, 'info', 'app.extensions.EGallery');
 			throw new CException('Path to gallery is not specified or invalid.');
 		endif;
 	}
@@ -235,7 +227,7 @@ class EGalleryBase extends CWidget {
 			$file = $_realpath.'description.txt';
 			if(file_exists($file))
 			{
-				$name = $this->getDescription($_realpath.'description.txt', true);
+				$name = $this->readDescription($_realpath.'description.txt', true);
 			}
 			elseif($this->displayFoldersAsDates)
 			{
@@ -269,7 +261,7 @@ class EGalleryBase extends CWidget {
 		$_images = array();
 		if(strstr($path, '../'))
 		{
-			Yii::log('Possible hacking attempt occured when trying to getImages(). Path requested: '.$path, 'warning', 'app.extensions.EGallery');
+			Yii::log('Possible hacking attempt occured when trying to getImages(). Path requested: '.$path, 'info', 'app.extensions.EGallery');
 			return $_images;
 		}
 		$path = preg_replace('~[^a-z0-9-_ ()\./]~i', '', $path);
@@ -322,11 +314,6 @@ class EGalleryBase extends CWidget {
 					}
 				}
 			}
-			
-			if($this->sort_order == 'desc')
-			{
-				$_images = array_reverse($_images);
-			}
 
 			if(!empty($_needsThumbs))
 			{
@@ -351,14 +338,14 @@ class EGalleryBase extends CWidget {
 	{
 		file_put_contents($this->_realpath.DIRECTORY_SEPARATOR.'needsThumbs.txt',serialize($_needsThumbs));
 
-		$Command = escapeshellarg(realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'EGalleryProcessQueue.php').' '.escapeshellarg($this->_realpath).' '.escapeshellarg($this->thumbnailWidth).' '.escapeshellarg($this->thumbnailHeight);
+		$Command = realpath(dirname(__FILE__)).DIRECTORY_SEPARATOR.'EGalleryProcessQueue.php '.$this->_realpath.' '.$this->thumbnailWidth.' '.$this->thumbnailHeight;
 
 		if(PHP_SHLIB_SUFFIX == 'so')// *nix (aka NOT windows)
 		{
 			/*
 			 * We need to make sure we are using the right PHP version
 			 * (problems with shared hosts that have PHP4 and PHP5 installed,
-			 * but PHP4 set as default).
+			 * but PHP4 set as default.
 			 */
 			$phpPaths = array('php','/usr/local/bin/php','/usr/local/php5/bin/php','/usr/bin/php','/usr/bin/php5');
 			foreach($phpPaths as $path)
@@ -373,9 +360,8 @@ class EGalleryBase extends CWidget {
 		}
 		else // Windows
 		{
-			pclose(popen("start /B php.exe $Command 2>nul >nul", "r"));
-//			$WshShell = new COM("WScript.Shell");
-//			$WshShell->Run("php.exe $Command", 0, false);
+			$WshShell = new COM("WScript.Shell");
+			$WshShell->Run("php.exe $Command", 0, false);
 		}
 	}
 
@@ -391,7 +377,7 @@ class EGalleryBase extends CWidget {
 		$_numImages = false;
 		if(strstr($path, '../'))
 		{
-			Yii::log('Possible hacking attempt occured when trying to getImages(). Path requested: '.$path, 'warning', 'app.extensions.EGallery');
+			Yii::log('Possible hacking attempt occured when trying to getImages(). Path requested: '.$path, 'info', 'app.extensions.EGallery');
 			return $_numImages;
 		}
 		$path = preg_replace('~[^a-z0-9-_ ()\./]~i', '', $path);
@@ -467,7 +453,7 @@ class EGalleryBase extends CWidget {
 		$_details = array();
 		if(strstr($path, '../'))
 		{
-			Yii::log('Possible hacking attempt occured when trying to getDetails(). Path requested: '.$path, 'warning', 'app.extensions.EGallery');
+			Yii::log('Possible hacking attempt occured when trying to getDetails(). Path requested: '.$path, 'info', 'app.extensions.EGallery');
 			return $_details;
 		}
 
@@ -491,8 +477,8 @@ class EGalleryBase extends CWidget {
 				return $_details;
 			}
 
-			$_details['name'] = $this->getDescription($file, true);
-			$_details['description'] = $this->getDescription($file);
+			$_details['name'] = $this->readDescription($file, true);
+			$_details['description'] = $this->readDescription($file);
 
 			if(isset(Yii::app()->cache))
 			{
@@ -512,7 +498,7 @@ class EGalleryBase extends CWidget {
 	 * @return string the text
 	 *
 	 */
-	protected function getDescription($file, $title=false)
+	protected function readDescription($file, $title=false)
 	{
 		$_cache=(isset(Yii::app()->cache))?Yii::app()->cache->get('EGallery_'.$file.'_'.$title.'_description'):false;
 		if($_cache!==false):
@@ -548,29 +534,29 @@ class EGalleryBase extends CWidget {
 	}
 
 	/**
-	 * @return string the dynamic CSS needed for {@see EGallery} and {@see EGalleryManager}
+	 * @return string the dynamic CSS needed for {@link EGallery}
 	 */
-	protected function generateCSS($folder, $file='gallery')
+	protected function generateCSS($folder)
 	{
 		$contents = '/*
- * This file is automatically generated. You should edit the associating PHP file instead.
+ * This file is automatically generated. You should edit gallery.css.php instead.
  */
 
 ';
 
-		if (is_file($folder.DIRECTORY_SEPARATOR.$file.'.css.php')) {
+		if (is_file($folder.DIRECTORY_SEPARATOR.'gallery.css.php')) {
 			ob_start();
-			include $folder.DIRECTORY_SEPARATOR.$file.'.css.php';
+			include $folder.DIRECTORY_SEPARATOR.'gallery.css.php';
 			$contents .= ob_get_contents();
 			ob_end_clean();
 		}
 
-		if($contents != file_get_contents($folder.DIRECTORY_SEPARATOR.$file.'.css') && is_writable($folder.DIRECTORY_SEPARATOR.$file.'.css'))
+		if($contents != file_get_contents($folder.DIRECTORY_SEPARATOR.'gallery.css') && is_writable($folder.DIRECTORY_SEPARATOR.'gallery.css'))
 		{
-			file_put_contents($folder.DIRECTORY_SEPARATOR.$file.'.css', $contents);
+			file_put_contents($folder.DIRECTORY_SEPARATOR.'gallery.css', $contents);
 		}
 
-		return $folder.DIRECTORY_SEPARATOR.$file.'.css';
+		return $folder.DIRECTORY_SEPARATOR.'gallery.css';
 	}
 }
 ?>
