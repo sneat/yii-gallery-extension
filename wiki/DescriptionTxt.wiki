@@ -1,4 +1,4 @@
-#summary Format of description.txt.
+#summary Format of description.txt
 #labels Phase-Support
 
 == Format of description.txt ==
