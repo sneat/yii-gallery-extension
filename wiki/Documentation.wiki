@@ -27,7 +27,7 @@ Create some "albums" in the gallery and put your photos (and optional [Descripti
       +-image7.jpg
 }}}
 
-If you name your folder by date (eg. 20091120) and create a [DescriptionTxt description.txt] you can sort your gallery [Properties by date], but show whatever album title you want.
+If you name your folder by date (eg. 20091120) and create a [DescriptionTxt description.txt] you can sort your gallery [EGalleryProperties by date], but show whatever album title you want.
 
 === Add the following code to your view: ===
 {{{
