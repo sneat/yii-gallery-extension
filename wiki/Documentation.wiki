@@ -34,7 +34,7 @@ If you name your folder by date (eg. 20091120) and create a [DescriptionTxt desc
 $this->widget('application.extensions.gallery.EGallery',
         array('path' => '/images/gallery',
             // 'other' => 'properties',
-            ),
+            )
     );
 }}}
 
