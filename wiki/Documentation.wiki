@@ -9,7 +9,7 @@ Extract the release file under `protected/extensions`
 
 == Usage ==
 Choose a location to store the photos: eg. /images/gallery
-Ensure that this location is writable by the webserver.
+Ensure that this location is writable by the webserver (if you want thumbnails generated for you).
 
 Create some "albums" in the gallery and put your photos (and optional [DescriptionTxt description.txt]) in there eg.
 
