@@ -3,6 +3,8 @@
 
 If you find that you aren't getting any thumbnails generated then your host may be blocking the [http://php.net/exec exec] or [http://php.net/shell_exec shell_exec] commands. You can either try contacting your host to see if they will enable them, or you could try using one of the following options (these may not be available to you on your host, if they aren't you're out of luck, find another host).
 
+If you are having any problems getting this to work when you think it should be working, please [http://code.google.com/p/yii-gallery-extension/issues/list submit an issue].
+
 = Any server =
 
 Your host may have a web interface that allows you to run a script every x minutes. If they do, you can add
