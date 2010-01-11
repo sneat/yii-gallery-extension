@@ -9,6 +9,7 @@ Extract the release file under `protected/extensions`
 
 == Usage ==
 Choose a location to store the photos: eg. /images/gallery
+Ensure that this location is writable by the webserver.
 
 Create some "albums" in the gallery and put your photos (and optional [DescriptionTxt description.txt]) in there eg.
 
@@ -41,4 +42,5 @@ $this->widget('application.extensions.gallery.EGallery',
 == Help me! ==
 
 * I'm not getting any thumbnails *
+  * Check that your gallery path is writeable.
   * Most likely your host is preventing the background task from being run. You have a [Cronjobs couple of options] available.
